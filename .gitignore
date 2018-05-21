@@ -1,1 +1,15 @@
-.idea
+/node_modules
+/public/hot
+/public/storage
+/public/files
+/storage/*.key
+/vendor
+/.gitattributes
+/.idea
+/.vscode
+/.vagrant
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+.env
