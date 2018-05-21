@@ -24,3 +24,5 @@ Route::get('/t1',
 		return view('t1', ['items' => $items, 'name' => 'Foo', 'greeting' => 'Bar']);
 	}
 );
+Route::get('/t2', 'T2Controller@index');
+Route::resource('articles', 'ArticlesController');
