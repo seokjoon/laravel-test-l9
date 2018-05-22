@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/', ['as' => 'home', function () { return view('welcome'); }]);
+Route::get('/', function () { return view('welcome'); });
+//Route::get('/', ['as' => 'home', function () { return view('welcome'); }]);
 //Route::get('/home', function () { return redirect(route('home')); });
 //Route::get('/{foo?}', function($foo = 'bar') { return $foo; })->where('foo', '[0-9a-zA-Z]{3}');
 //Route::get('/error', ['error' => 'error', function() { return view('errors.503'); }]);
@@ -25,4 +26,28 @@ Route::get('/t1',
 	}
 );
 Route::get('/t2', 'T2Controller@index');
+
 Route::resource('articles', 'ArticlesController');
+
+Route::get('auth/login', function() {
+	$cds = [ 'email' => 'a@b.c', 'password' => '11111111', ];
+	if(!(auth()->attempt($cds))) { return 'incorrect login info'; }
+	return redirect('protected');
+});
+Route::get('protected', function(){
+	dump(session()->all());
+	if(!(auth()->check())) { return 'who?'; }
+	return 'welcome' . auth()->user()->name;
+});
+Route::get('protected', ['middleware' => 'auth', function(){
+	dump(session()->all());
+	return 'welcome' . auth()->user()->name;
+}]);
+Route::get('auth/logout', function() {
+	auth()->logout();
+	return 'see again';
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
