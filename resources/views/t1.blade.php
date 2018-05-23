@@ -4,14 +4,14 @@
 	<style>
 		body { background: green; color: white; }
 	</style>
-@endsection
+@stop
 @section('content')
 	<p>저는 자식 뷰의 'content' 섹션입니다.</p>
 	@include('partials.footer')
-@endsection
+@stop
 @section('script')
 	<script>alert("저는 자식 뷰의 'script' 섹션입니다.")</script>
-@endsection
+@stop
 
 <ul>
 	@forelse($items as $item)

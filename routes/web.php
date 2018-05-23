@@ -51,4 +51,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('articles', 'ArticlesController');
-DB::listen(function($query) { dump($query->sql); });
+//DB::listen(function($query) { dump($query->sql); });
+
