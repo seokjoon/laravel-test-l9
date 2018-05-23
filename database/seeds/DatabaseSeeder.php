@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +12,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+		if(config('database.default') !== 'sqlite') {
+			DB::statement('SET FOREIGN_KEY_CHECKS=0');
+		}
+
+		App\User::truncate();
+		$this->call(UsersTableSeeder::class);
+
+		App\Article::truncate();
+		$this->call(ArticlesTableSeeder::class);
+
+		if(config('database.default') !== 'sqlite') {
+			DB::statement('SET FOREIGN_KEY_CHECKS=1');
+		}
     }
 }
