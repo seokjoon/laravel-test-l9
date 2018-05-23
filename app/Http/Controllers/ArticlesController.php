@@ -13,7 +13,12 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-    	echo __METHOD__;
+    	//$articles = \App\Article::get();
+    	//$articles = \App\Article::with('user')->get();
+		$articles = \App\Article::latest()->paginate(5);
+		$articles->load('user');
+
+    	return view('articles.index', compact('articles'));
     }
 
     /**

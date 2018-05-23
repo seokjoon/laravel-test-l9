@@ -27,8 +27,6 @@ Route::get('/t1',
 );
 Route::get('/t2', 'T2Controller@index');
 
-Route::resource('articles', 'ArticlesController');
-
 Route::get('auth/login', function() {
 	$cds = [ 'email' => 'a@b.c', 'password' => '11111111', ];
 	if(!(auth()->attempt($cds))) { return 'incorrect login info'; }
@@ -51,3 +49,6 @@ Route::get('auth/logout', function() {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('articles', 'ArticlesController');
+DB::listen(function($query) { dump($query->sql); });
