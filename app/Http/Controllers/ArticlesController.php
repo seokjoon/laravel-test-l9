@@ -63,7 +63,12 @@ class ArticlesController extends Controller
     		return back()->with('flash_message', '글이 저장되지 않았습니다.')->withInput();
 		}
 
-		return redirect(route('articles.index'))->with('flash_message', '작성하신 글이 저장되었습니다.');
+		dump('event thrown begin');
+    	//event('article.created', [$article]);
+		event(new \App\Events\ArticleCreated($article));
+    	dump('event thrown end');
+
+		//return redirect(route('articles.index'))->with('flash_message', '작성하신 글이 저장되었습니다.');
 	}
 
     /**
