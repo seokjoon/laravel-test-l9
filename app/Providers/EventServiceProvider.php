@@ -13,9 +13,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\Event' => [
+        /* 'App\Events\Event' => [
             'App\Listeners\EventListener',
-        ],
+        ], */
+        \App\Events\ArticlesEvent::class => [
+        	\App\Listeners\ArticlesEventListener::class,
+		],
     ];
 
     /**
@@ -32,9 +35,13 @@ class EventServiceProvider extends ServiceProvider
 			dump($article->toArray());
 		}); */
         //Event::listen('article.created', \App\Listeners\ArticlesEventListener::class);
-        Event::listen(
+        /* Event::listen(
         	\App\Events\ArticleCreated::class,
 			\App\Listeners\ArticlesEventListener::class
 		);
+        Event::listen(
+        	\App\Events\ArticleCreatedT1::class,
+			\App\Listeners\ArticlesEventT1Listener::class
+		); */
     }
 }
