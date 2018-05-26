@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -18,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         ], */
         \App\Events\ArticlesEvent::class => [
         	\App\Listeners\ArticlesEventListener::class,
+		],
+		Login::class => [
+			\App\Listeners\UsersEventListener::class,
 		],
     ];
 
