@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -46,6 +47,16 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+		//if(app()->environment('production')) {
+		if(app()->environment('local')) {
+			if($exception instanceof ModelNotFoundException) {
+				return response(view('errors.notice', [
+					'title' => '찾을 수 없습니다.',
+					'description' => '죄송합니다! 요청하신 페이지가 없습니다.',
+				]), 404);
+			}
+		}
+
+		return parent::render($request, $exception);
     }
 }
