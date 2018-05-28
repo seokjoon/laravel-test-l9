@@ -20,7 +20,8 @@
 	<div class="col-md-9 list__article">
 		<article data-id="{{ $article->id }}" id="item__article">
 			<div class="content__article">
-				{!! app(ParsedownExtra::class)->text($article->content) !!}
+				{{-- {!! app(ParsedownExtra::class)->text($article->content) !!} --}}
+				{!! markdown($article->content) !!}
 			</div>
 		</article>
 		<div class="text-center action__article">

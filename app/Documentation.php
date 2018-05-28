@@ -27,6 +27,6 @@ class Documentation
 
 	protected function replaceLinks($content)
 	{
-		return str_replace('/docs/{version}', '/docs', $content);
+		return str_replace('/docs/{{version}}', '/docs', $content);
 	}
 }
