@@ -65,3 +65,11 @@ Route::get('mail', function() {
 		}
 	);
 });
+
+Route::get('markdown', function () {
+	$text =<<<EOT
+# test
+- test test
+EOT;
+	return app(ParsedownExtra::class)->text($text);
+});
