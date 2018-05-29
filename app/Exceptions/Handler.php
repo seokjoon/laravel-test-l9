@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
 				]), 404);
 			}
 		} */
-		if(app()->environment('local')) {
+		if(app()->environment('production')) {
 			$sCode = 400;
 			$title = '죄송합니다.';
 			$desc = '에러가 발생했습니다.';
