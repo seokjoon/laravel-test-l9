@@ -27,27 +27,6 @@ Route::get('/t1',
 );
 Route::get('/t2', 'T2Controller@index');
 
-Route::get('auth/login', function() {
-	$cds = [ 'email' => 'a@b.c', 'password' => '11111111', ];
-	if(!(auth()->attempt($cds))) { return 'incorrect login info'; }
-	return redirect('protected');
-});
-Route::get('protected', function(){
-	dump(session()->all());
-	if(!(auth()->check())) { return 'who?'; }
-	return 'welcome' . auth()->user()->name;
-});
-Route::get('protected', ['middleware' => 'auth', function(){
-	dump(session()->all());
-	return 'welcome' . auth()->user()->name;
-}]);
-Route::get('auth/logout', function() {
-	auth()->logout();
-	return 'see again';
-});
-
-Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('articles', 'ArticlesController');
@@ -81,3 +60,38 @@ EOT;
 Route::get('docs/{file?}', 'DocsController@show');
 //Route::get('docs/images/{image}', 'DocsController@image')->where('image', '[\pL-\pN._-]+-img-[0-9]{2}.jpg]');
 Route::get('docs/images/{image}', 'DocsController@image');
+
+////////
+/* Route::get('auth/login', function() {
+	$cds = [ 'email' => 'a@b.c', 'password' => '11111111', ];
+	if(!(auth()->attempt($cds))) { return 'incorrect login info'; }
+	return redirect('protected');
+});
+Route::get('protected', function(){
+	dump(session()->all());
+	if(!(auth()->check())) { return 'who?'; }
+	return 'welcome' . auth()->user()->name;
+});
+Route::get('protected', ['middleware' => 'auth', function(){
+	dump(session()->all());
+	return 'welcome' . auth()->user()->name;
+}]);
+Route::get('auth/logout', function() {
+	auth()->logout();
+	return 'see again';
+});
+Auth::routes(); */
+//사용자 가입
+Route::get('auth/register', [ 'as' => 'users.create', 'uses' => 'UsersController@created' ]);
+Route::post('auth/register', ['as' => 'users.store', 'uses' => 'UsersController@store']);
+Route::get('auth/confirm/{code}', ['as' => 'users.confirm', 'uses' => 'UsersController@confirm']);
+//사용자 인증
+Route::get('auth/login', ['as' => 'sessions.create', 'uses' => 'SessionController@create']);
+Route::post('auth/login', ['as' => 'sessions.store', 'uses' => 'SessionController@store']);
+Route::get('auth/logout', ['as' => 'sessions.destroy', 'uses' => 'SessionController@destroy']);
+//비밀번호 초기화
+Route::get('auth/remind', ['as' => 'remind.create', 'uses' => 'PasswordsController@getRemind']);
+Route::post('auth/remind', ['as' => 'remind.store', 'uses' => 'PasswordsController@postRemind']);
+Route::get('auth/reset/{token}', ['as' => 'reset.create', 'uses' => 'PasswordsConttoller@getReset']);
+Route::post('auth/reset', ['as' => 'reset.store', 'uses' => 'PasswordsController@postReset']);
+////////
