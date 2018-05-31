@@ -26,12 +26,9 @@
 						</a>
 
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="{{ route('sessions.destroy') }}"
-							   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+							<a class="dropdown-item" href="{{ route('sessions.destroy') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 								{{ __('Logout') }}
 							</a>
-
 							<form id="logout-form" action="{{ route('sessions.destroy') }}" method="POST" style="display: none;">
 								@csrf
 							</form>

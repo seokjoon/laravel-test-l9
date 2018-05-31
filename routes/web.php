@@ -94,4 +94,6 @@ Route::get('auth/remind', ['as' => 'remind.create', 'uses' => 'PasswordsControll
 Route::post('auth/remind', ['as' => 'remind.store', 'uses' => 'PasswordsController@postRemind']);
 Route::get('auth/reset/{token}', ['as' => 'reset.create', 'uses' => 'PasswordsController@getReset']);
 Route::post('auth/reset', ['as' => 'reset.store', 'uses' => 'PasswordsController@postReset']);
+
+Route::get('login', function() { return redirect('auth/login'); });
 ////////
