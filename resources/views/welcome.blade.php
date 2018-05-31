@@ -78,6 +78,7 @@
             @endif
 
             <div class="content">
+                @include('flash::message')
                 <div class="title m-b-md">
                     Laravel
                 </div>

@@ -23,8 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-    	flash(__METHOD__);
-
+    	//flash(__METHOD__);
         return view('home');
     }
 }
