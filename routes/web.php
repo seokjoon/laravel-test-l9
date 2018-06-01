@@ -97,3 +97,5 @@ Route::post('auth/reset', ['as' => 'reset.store', 'uses' => 'PasswordsController
 
 Route::get('login', function() { return redirect('auth/login'); });
 ////////
+
+Route::get('social/{provider}', ['as' => 'social.login', 'uses' => 'SocialController@excute']);

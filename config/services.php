@@ -14,6 +14,12 @@ return [
     |
     */
 
+    'github' => [
+    	'client_id' => env('GITHUB_ID'),
+		'client_secret' => env('GITHUB_SECRET'),
+		'redirect' => env('GITHUB_CALLBACK'),
+	],
+
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
