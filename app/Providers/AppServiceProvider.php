@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use DebugBar\DebugBar;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,7 +15,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+    	view()->composer('*', function($view) {
+    		$allTags = Cache::rememberForever('tags.list', function() {
+    			return \App\Tag::all();
+			});
+    		$view->with(compact('allTags'));
+		});
+
     }
 
     /**

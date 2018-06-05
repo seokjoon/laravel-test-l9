@@ -22,24 +22,9 @@ class ArticlesController extends Controller
 	 */
 	public function create()
 	{
+		$article = new \App\Article;
 		return view('articles.create', compact('article'));
 	}
-
-	/**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-    	//$articles = \App\Article::get();
-    	//$articles = \App\Article::with('user')->get();
-		$articles = \App\Article::latest()->paginate(5);
-		$articles->load('user');
-
-		//dd(view('articles.index', compact('articles'))->render());
-    	return view('articles.index', compact('articles'));
-    }
 
 	/**
 	 * Remove the specified resource from storage.
@@ -72,6 +57,25 @@ class ArticlesController extends Controller
 		return view('articles.edit', compact('article'));
 	}
 
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	//public function index()
+	public function index($slug = null)
+	{
+		//$articles = \App\Article::get();
+		//$articles = \App\Article::with('user')->get();
+		//$articles = \App\Article::latest()->paginate(5);
+		$query = $slug ? \App\Tag::whereSlug($slug)->firstOrFail()->articles() : new \App\Article;
+		$articles = $query->latest()->paginate(5);
+		$articles->load('user');
+
+		//dd(view('articles.index', compact('articles'))->render());
+		return view('articles.index', compact('articles'));
+	}
+
     /**
      * Store a newly created resource in storage.
      *
@@ -97,11 +101,14 @@ class ArticlesController extends Controller
 		} */
 		//$this->validate($request, $rules);
 
+
 		//$article = \App\User::find(1)->articles()->create($request->all());
     	$article = auth()->user()->articles()->create($request->all());
     	if(!($article)) {
+    		$article->tags()->sync($request->input('tags'));
     		return back()->with('flash_message', '글이 저장되지 않았습니다.')->withInput();
 		}
+		$article->tags()->sync($request->input('tags'));
 
     	//event('article.created', [$article]);
 		//event(new \App\Events\ArticleCreated($article));
@@ -137,6 +144,7 @@ class ArticlesController extends Controller
 	public function update(\App\Http\Requests\ArticleRequest $request, \App\Article $article)
     {
     	$article->update($request->all());
+    	$article->tags()->sync($request->input('tags'));
     	flash()->success('수정하신 내용을 저장했습니다.');
     	return redirect(route('articles.show', $article->id));
     }
