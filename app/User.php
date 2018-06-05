@@ -40,6 +40,16 @@ class User extends Authenticatable
 		return $this->hasMany(Article::class);
 	}
 
+	public function getGravatarUrlAttribute() //eloquent model accessor test
+	{
+		return sprintf('//www.gravatar.com/avatar/%s?s=%s', md5($this->email), 48);
+	}
+
+	public function isAdmin()
+	{
+		return false; //TODO
+	}
+
 	public function scopeSocialUser($query, $email)
 	{
 		return $query->whereEmail($email)->whereNull('password');

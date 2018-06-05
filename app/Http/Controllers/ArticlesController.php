@@ -2,12 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ArticlesController extends Controller
 {
-    /**
+
+	public function __construct()
+	{
+		$this->middleware('auth', ['except' => ['index', 'show']]);
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create()
+	{
+		return view('articles.create', compact('article'));
+	}
+
+	/**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -23,15 +41,36 @@ class ArticlesController extends Controller
     	return view('articles.index', compact('articles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    	return view('articles.create');
-    }
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	//public function destroy($id)
+	public function destroy(\App\Article $article)
+	{
+		$this->authorize('delete', $article);
+
+		$article->delete();
+		//return response()->json([], 204);
+		flash()->success('forum.deleted');
+		return redirect(route('articles.index'));
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	//public function edit($id)
+	public function edit(\App\Article $article)
+	{
+		$this->authorize('update', $article);
+
+		return view('articles.edit', compact('article'));
+	}
 
     /**
      * Store a newly created resource in storage.
@@ -78,24 +117,13 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    //public function show($id) //explicit route model binding in RouteServiceProvider.php
+    public function show($article)
     {
-		$article = \App\Article::findOrFail($id);
-		//dd($article);
-		debug($article->toArray());
+		//$article = \App\Article::findOrFail($id); //route model binding
+		////dd($article);
+		////debug($article->toArray());
 		return view('articles.show', compact('article'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-    	dump($id);
-		echo __METHOD__;
     }
 
     /**
@@ -105,22 +133,11 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    //public function update(Request $request, $id)
+	public function update(\App\Http\Requests\ArticleRequest $request, \App\Article $article)
     {
-    	dump($request);
-    	dump($id);
-		echo __METHOD__;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-    	dump($id);
-		echo __METHOD__;
+    	$article->update($request->all());
+    	flash()->success('수정하신 내용을 저장했습니다.');
+    	return redirect(route('articles.show', $article->id));
     }
 }

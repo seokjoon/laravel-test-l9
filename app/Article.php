@@ -9,6 +9,8 @@ class Article extends Model
 
 	protected $fillable = ['title', 'content'];
 
+	//protected $with = ['user'];
+
 	public function tags()
 	{
 		return $this->belongsToMany(Tag::class);

@@ -3,7 +3,7 @@
 	<hr />
 	@yield('style')
 	@yield('content')
-	{{-- @yield('script') --}}
+	@yield('script')
 	<hr />
 </body>
 </html>
