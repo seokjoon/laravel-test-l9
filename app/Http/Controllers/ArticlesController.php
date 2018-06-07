@@ -110,6 +110,20 @@ class ArticlesController extends Controller
 		}
 		$article->tags()->sync($request->input('tags'));
 
+		if($request->hasFile('files')) {
+			$files = $request->file('files');
+			foreach ($files as $file) {
+				$filename = str_random() . filter_var($file->getClientOriginalName(), FILTER_SANITIZE_URL);
+				$file->move(attachments_path(), $filename);
+
+				$article->attachments()->create([
+					'filename' => $filename,
+					'bytes' => $file->getSize(),
+					'mime' => $file->getClientMimeType()
+				]);
+			}
+		}
+
     	//event('article.created', [$article]);
 		//event(new \App\Events\ArticleCreated($article));
 		//event(new \App\Events\ArticleCreatedT1($article));

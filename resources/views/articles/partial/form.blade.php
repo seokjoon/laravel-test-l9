@@ -16,6 +16,12 @@
 	{!! $errors->first('tags', '<span class="form-error">:message</span>') !!}
 </div>
 
+<div class="form-group {{ $errors->has('files') ? 'has-error' : '' }}">
+	<label for="files">파일</label>
+	<input type="file" name="files[]" id="files" class="form-control" multiple="multiple" />
+	{!! $errors->first('files.0', '<span class="form-error">:message</span>') !!}
+</div>
+
 <div class="form-group {{ $errors->has('content') ? 'has-error' : '' }}">
 	<label for="content">본문</label>
 	<textarea name="content" id="content" rows="10" class="form-control">

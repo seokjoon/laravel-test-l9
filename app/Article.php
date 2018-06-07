@@ -11,6 +11,11 @@ class Article extends Model
 
 	//protected $with = ['user'];
 
+	public function attachments()
+	{
+		return $this->hasMany(Attachment::class);
+	}
+
 	public function tags()
 	{
 		return $this->belongsToMany(Tag::class);
