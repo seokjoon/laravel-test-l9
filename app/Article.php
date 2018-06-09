@@ -16,6 +16,11 @@ class Article extends Model
 		return $this->hasMany(Attachment::class);
 	}
 
+	public function comments()
+	{
+		return $this->morphMany(Comment::class, 'commentable');
+	}
+
 	public function tags()
 	{
 		return $this->belongsToMany(Tag::class);

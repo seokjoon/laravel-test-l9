@@ -101,3 +101,6 @@ Route::get('login', function() { return redirect('auth/login'); });
 Route::get('social/{provider}', ['as' => 'social.login', 'uses' => 'SocialController@excute']);
 
 Route::get('tags/{slug}/articles', [ 'as' => 'tags.articles.index', 'uses' => 'ArticlesController@index' ]);
+
+Route::resource('comments', 'CommentController', ['only' => ['update', 'destory']]);
+Route::resource('articles.comments', 'CommentController', ['only' => 'store']);

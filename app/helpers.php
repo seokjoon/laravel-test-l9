@@ -6,6 +6,15 @@ if(!(function_exists('attachments_path'))) {
 	}
 }
 
+if(!(function_exists('current_url'))) {
+	function current_url() {
+		if(!(request()->has('return'))) {
+			return request()->fullUrl();
+		}
+		return sprintf('%s?%s', request()->url(), http_build_query(request()->expect('return')));
+	}
+}
+
 if(!(function_exists('format_filesize'))) {
 	function format_filesize($bytes) {
 		if (! is_numeric($bytes)) return 'NaN';

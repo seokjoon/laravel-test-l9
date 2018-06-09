@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use DebugBar\DebugBar;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,7 +20,13 @@ class AppServiceProvider extends ServiceProvider
     		$allTags = Cache::rememberForever('tags.list', function() {
     			return \App\Tag::all();
 			});
-    		$view->with(compact('allTags'));
+
+    		$currentUser = auth()->user();
+    		$currentRouteName = Route::currentRouteName();
+    		$currentLocale = app()->getLocale();
+    		$currentUrl = current_url();
+
+    		$view->with(compact('allTags', 'currentLocale', 'currentRouteName', 'currentUrl', 'currentUser'));
 		});
 
     }

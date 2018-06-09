@@ -144,7 +144,9 @@ class ArticlesController extends Controller
 		//$article = \App\Article::findOrFail($id); //route model binding
 		////dd($article);
 		////debug($article->toArray());
-		return view('articles.show', compact('article'));
+		//return view('articles.show', compact('article'));
+		$comments = $article->comments()->with('replies')->whereNull('parent_id')->latest()->get();
+		return view('articles.show', compact('article', 'comments'));
     }
 
     /**

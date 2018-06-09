@@ -26,7 +26,11 @@ class DatabaseSeeder extends Seeder
 		DB::table('article_tag')->truncate();
 		$this->call(TagsTableSeeder::class);
 
+		App\Attachment::truncate();
 		$this->call(AttachmentsTableSeeder::class);
+
+		App\Comment::truncate();
+		$this->call(CommentTableSeeder::class);
 
 		if(config('database.default') !== 'sqlite') {
 			DB::statement('SET FOREIGN_KEY_CHECKS=1');

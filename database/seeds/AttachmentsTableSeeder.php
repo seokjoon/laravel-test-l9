@@ -15,7 +15,6 @@ class AttachmentsTableSeeder extends Seeder
 		$faker = app(Faker\Generator::class);
 		$articles = \App\Article::all();
 
-    	\App\Attachment::truncate();
     	if(!(File::isDirectory(attachments_path()))) {
 			File::makeDirectory(attachments_path(), 775, true);
 		}

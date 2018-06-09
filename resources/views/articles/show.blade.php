@@ -45,6 +45,10 @@
 			</a>
 		</form>
 	</div>
+
+	<div class="container__comment">
+		@include('comments.index')
+	</div>
 @stop
 
 {{-- @section('script')
