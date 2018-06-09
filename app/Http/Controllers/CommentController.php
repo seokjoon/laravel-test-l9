@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Comment;
 use App\Http\Requests\CommentsRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -99,4 +100,23 @@ class CommentController extends Controller
         $comment->delete();
         return response()->json([], 204);
     }
+
+    public function vote(Request $request, Comment $comment)
+	{
+		$this->validate($request, ['vote' => 'required|in:up,down']);
+		if($comment->votes()->whereUserId($request->user()->id)->exists()) {
+			return response()->json(['error' => 'already_voted'], 409);
+		}
+		$up = $request->input('vote') == 'up' ? true : false;
+		$comment->votes()->create([
+			'user_id' => $request->user()->id,
+			'up' => $up,
+			'down' => !($up),
+			'voted_at' => Carbon::now()->toDateTimeString(),
+		]);
+		return response()->json([
+			'voted' => $request->input('vote'),
+			'value' => $comment->votes()->sum($request->input('vote')),
+		]);
+	}
 }

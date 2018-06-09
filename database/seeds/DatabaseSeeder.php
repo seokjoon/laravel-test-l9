@@ -32,6 +32,9 @@ class DatabaseSeeder extends Seeder
 		App\Comment::truncate();
 		$this->call(CommentTableSeeder::class);
 
+		App\Vote::truncate();
+		$this->call(VotesTableSeeder::class);
+
 		if(config('database.default') !== 'sqlite') {
 			DB::statement('SET FOREIGN_KEY_CHECKS=1');
 		}
