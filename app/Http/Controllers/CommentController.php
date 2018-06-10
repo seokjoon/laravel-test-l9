@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Comment;
+use App\Events\CommentsEvent;
 use App\Http\Requests\CommentsRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -46,6 +47,9 @@ class CommentController extends Controller
 	public function store(CommentsRequest $request, Article $article)
     {
 		$comment = $article->comments()->create(array_merge($request->all(), ['user_id' => $request->user()->id]));
+
+		event(new CommentsEvent($comment));
+
 		flash()->success('작성하신 댓글을 저장했습니다.');
 		return redirect(route('articles.show', $article->id) . '#comment_' . $comment->id);
     }

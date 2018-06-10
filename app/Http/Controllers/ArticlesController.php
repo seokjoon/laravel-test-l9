@@ -114,7 +114,12 @@ class ArticlesController extends Controller
 
 
 		//$article = \App\User::find(1)->articles()->create($request->all());
-    	$article = auth()->user()->articles()->create($request->all());
+    	//$article = auth()->user()->articles()->create($request->all());
+    	$payload = array_merge($request->all(), [
+    		'notification' => $request->has('notification'),
+		]);
+    	$article = $request->user()->articles()->create($payload);
+
     	if(!($article)) {
     		$article->tags()->sync($request->input('tags'));
     		return back()->with('flash_message', '글이 저장되지 않았습니다.')->withInput();

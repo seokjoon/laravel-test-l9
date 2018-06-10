@@ -20,6 +20,9 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\ArticlesEvent::class => [
         	\App\Listeners\ArticlesEventListener::class,
 		],
+		\App\Events\CommentsEvent::class => [
+			\App\Listeners\CommentsEventListener::class,
+		],
 		Login::class => [
 			\App\Listeners\UsersEventListener::class,
 		],

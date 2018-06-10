@@ -22,6 +22,15 @@
 	{!! $errors->first('files.0', '<span class="form-error">:message</span>') !!}
 </div>
 
+<div class="form-group">
+	<div class="checkbox">
+		<label>
+			<input type="checkbox" name="notification" value="{{ old('notification', 1) }}" checked />
+			댓글이 작성되면 알림 받기
+		</label>
+	</div>
+</div>
+
 <div class="form-group {{ $errors->has('content') ? 'has-error' : '' }}">
 	<label for="content">본문</label>
 	<textarea name="content" id="content" rows="10" class="form-control">
