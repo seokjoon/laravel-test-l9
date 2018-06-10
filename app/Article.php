@@ -21,6 +21,11 @@ class Article extends Model
 		return $this->morphMany(Comment::class, 'commentable');
 	}
 
+	public function getCommentCountAttribute()
+	{
+		return (int) $this->comments->count();
+	}
+
 	public function tags()
 	{
 		return $this->belongsToMany(Tag::class);

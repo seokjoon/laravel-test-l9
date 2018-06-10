@@ -63,12 +63,23 @@ class ArticlesController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	//public function index()
-	public function index($slug = null)
+	//public function index($slug = null)
+	public function index(Request $request, $slug = null)
 	{
 		//$articles = \App\Article::get();
 		//$articles = \App\Article::with('user')->get();
 		//$articles = \App\Article::latest()->paginate(5);
 		$query = $slug ? \App\Tag::whereSlug($slug)->firstOrFail()->articles() : new \App\Article;
+
+		$query = $query->orderBy(
+			$request->input('sort', 'created_at'),
+			$request->input('order', 'desc')
+		);
+		if($keyword = request()->input('q')) {
+			$raw = 'MATCH(title,content) AGAINST(? IN BOOLEAN MODE)';
+			$query = $query->whereRaw($raw, [$keyword]);
+		}
+
 		$articles = $query->latest()->paginate(5);
 		$articles->load('user');
 
@@ -139,12 +150,16 @@ class ArticlesController extends Controller
      * @return \Illuminate\Http\Response
      */
     //public function show($id) //explicit route model binding in RouteServiceProvider.php
-    public function show($article)
+    public function show(Article $article)
     {
 		//$article = \App\Article::findOrFail($id); //route model binding
 		////dd($article);
 		////debug($article->toArray());
 		//return view('articles.show', compact('article'));
+
+		$article->view_count += 1;
+		$article->save();
+
 		$comments = $article->comments()->with('replies')->whereNull('parent_id')->latest()->get();
 		return view('articles.show', compact('article', 'comments'));
     }
