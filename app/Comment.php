@@ -3,11 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
 
+	use SoftDeletes;
+
 	protected $appends = ['down_count', 'up_count'];
+
+	protected $dates = ['deleted_at'];
 
 	protected $fillable = ['commentable_id', 'commentable_type', 'content', 'parent_id', 'user_id'];
 

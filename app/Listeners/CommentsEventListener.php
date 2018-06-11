@@ -45,7 +45,8 @@ class CommentsEventListener
 			$this->recipients($comment->parent);
 		}
 		if($comment->commentable->notification) {
-			$to[] = $comment->commentable->user->email;
+			//$to[] = $comment->commentable->user->email;
+			$to = [$comment->commentable->user->email];
 		}
 		return array_unique($to);
 	}

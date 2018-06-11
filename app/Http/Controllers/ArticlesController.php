@@ -165,7 +165,7 @@ class ArticlesController extends Controller
 		$article->view_count += 1;
 		$article->save();
 
-		$comments = $article->comments()->with('replies')->whereNull('parent_id')->latest()->get();
+		$comments = $article->comments()->with('replies')->withTrashed()->whereNull('parent_id')->latest()->get();
 		return view('articles.show', compact('article', 'comments'));
     }
 
