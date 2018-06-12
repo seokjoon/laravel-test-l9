@@ -1,6 +1,8 @@
 <?php
 
 return [
+	//'cache' => false,
+	'cache' => true,
 	'description' => 'desc',
 	'name' => 'l9',
 	'sorting' => [

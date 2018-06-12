@@ -7,12 +7,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class ArticlesController extends Controller
+class ArticlesController extends Controller implements Cacheable
 {
 
 	public function __construct()
 	{
+		parent::__construct();
 		$this->middleware('auth', ['except' => ['index', 'show']]);
+	}
+
+	public function cacheTags()
+	{
+		return 'articles';
 	}
 
 	/**
@@ -39,6 +45,9 @@ class ArticlesController extends Controller
 
 		$article->delete();
 		//return response()->json([], 204);
+
+		event(new \App\Events\ModelChanged(['articles']));
+
 		flash()->success('forum.deleted');
 		return redirect(route('articles.index'));
 	}
@@ -66,6 +75,8 @@ class ArticlesController extends Controller
 	//public function index($slug = null)
 	public function index(Request $request, $slug = null)
 	{
+		$cacheKey = cache_key('articles.index');
+
 		//$articles = \App\Article::get();
 		//$articles = \App\Article::with('user')->get();
 		//$articles = \App\Article::latest()->paginate(5);
@@ -80,8 +91,9 @@ class ArticlesController extends Controller
 			$query = $query->whereRaw($raw, [$keyword]);
 		}
 
-		$articles = $query->latest()->paginate(5);
-		$articles->load('user');
+		//$articles = $query->latest()->paginate(5);
+		//$articles->load('user');
+		$articles = $this->cache($cacheKey, 5, $query, 'paginate', 3);
 
 		//dd(view('articles.index', compact('articles'))->render());
 		return view('articles.index', compact('articles'));
@@ -145,6 +157,8 @@ class ArticlesController extends Controller
 		//event(new \App\Events\ArticleCreatedT1($article));
 		event(new \App\Events\ArticlesEvent($article));
 
+		event(new \App\Events\ModelChanged(['articles']));
+
 		return redirect(route('articles.index'))->with('flash_message', '작성하신 글이 저장되었습니다.');
 	}
 
@@ -166,6 +180,7 @@ class ArticlesController extends Controller
 		$article->save();
 
 		$comments = $article->comments()->with('replies')->withTrashed()->whereNull('parent_id')->latest()->get();
+
 		return view('articles.show', compact('article', 'comments'));
     }
 
@@ -181,6 +196,9 @@ class ArticlesController extends Controller
     {
     	$article->update($request->all());
     	$article->tags()->sync($request->input('tags'));
+
+		event(new \App\Events\ModelChanged(['articles']));
+
     	flash()->success('수정하신 내용을 저장했습니다.');
     	return redirect(route('articles.show', $article->id));
     }

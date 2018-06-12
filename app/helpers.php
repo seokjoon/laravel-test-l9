@@ -6,6 +6,13 @@ if(!(function_exists('attachments_path'))) {
 	}
 }
 
+if(!(function_exists('cache_key'))) {
+	function cache_key($base) {
+		$key = ($uri = request()->getQueryString()) ? $base . '.' . urlencode($uri) : $base;
+		return md5($key);
+	}
+}
+
 if(!(function_exists('current_url'))) {
 	function current_url() {
 		if(!(request()->has('return'))) {
@@ -75,5 +82,11 @@ if(!(function_exists('link_for_sort'))) {
 			$queryString,
 			$text
 		);
+	}
+}
+
+if(!(function_exists('taggable'))) {
+	function taggable() {
+		return in_array(config('cache.default'), ['memcached', 'redis'], true);
 	}
 }
