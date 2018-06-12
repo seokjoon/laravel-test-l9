@@ -1,5 +1,17 @@
 <?php
 
+if(!(function_exists('array_transpose'))) {
+	function array_transpose(array $data) {
+		$res = [];
+		foreach ($data as $row => $columns) {
+			foreach ($columns as $row2 => $column2) {
+				$res[$row2][$row] = $column2;
+			}
+		}
+		return $res;
+	}
+}
+
 if(!(function_exists('attachments_path'))) {
 	function attachments_path($path = '') {
 		return public_path('files' . ($path ? DIRECTORY_SEPARATOR . $path : $path));

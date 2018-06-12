@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use DebugBar\DebugBar;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,6 +18,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+    	//app()->setLocale('en');
+    	//Carbon::setLocale(app()->getLocale());
+		if($locale = request()->cookie('locale__l9')) {
+			app()->setLocale(Crypt::decrypt($locale));
+		}
+		Carbon::setLocale(app()->getLocale());
+
     	view()->composer('*', function($view) {
     		$allTags = Cache::rememberForever('tags.list', function() {
     			return \App\Tag::all();

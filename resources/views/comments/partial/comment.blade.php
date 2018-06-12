@@ -81,7 +81,8 @@
           {{ $comment->user->name }}
         </a>
         <small>
-          {{ $comment->created_at->diffForHumans() }}
+          {{-- $comment->created_at->diffForHumans() --}}
+          {{ trans('forum.comments.created_at', ['when' => $comment->created_at->diffForHumans()]) }}
         </small>
       </h5>
 

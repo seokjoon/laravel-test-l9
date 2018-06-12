@@ -31,7 +31,9 @@ class CommentsEventListener
     	$comment->load('commentable');
     	$to = $this->recipients($comment);
     	if(!($to)) return;
-    	Mail::send('emails.comments.created', compact('comment'), function($message) use ($to) {
+    	//Mail::send('emails.comments.created', compact('comment'), function($message) use ($to) {
+		$view = 'emails.' . app()->getLocale() . '.comments.created';
+		Mail::send($view, compact('comment'), function($message) use ($to) {
 			$message->to($to);
 			$message->subject(sprintf('[%s] 새로운 댓글이 등록되었습니다.', config('app.name')));
 		});
