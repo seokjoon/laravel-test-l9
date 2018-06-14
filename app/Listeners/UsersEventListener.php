@@ -35,7 +35,7 @@ class UsersEventListener
 
     public function onPasswordRemindCreated(\App\Events\PasswordRemindCreated $event)
 	{
-		Mail::send('emails.passwords.reset',
+		Mail::send('emails.' . app()->getLocale() . '.passwords.reset',
 			['token' => $event->token],
 			function($message) use($event) {
 				$message->to($event->email);
@@ -47,7 +47,7 @@ class UsersEventListener
     public function onUserCreated(\App\Events\UserCreated $event)
 	{
 		$user = $event->user;
-		Mail::send('emails.auth.confirm', compact('user'), function($message) use($user) {
+		Mail::send('emails.' . app()->getLocale() . '.auth.confirm', compact('user'), function($message) use($user) {
 			$message->to($user->email);
 			$message->subject(sprintf('[%s] 회원 가입을 확인해 주세요.', config('app.name')));
 		});

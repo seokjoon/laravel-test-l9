@@ -9,7 +9,7 @@ use App\Http\Requests\CommentsRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class CommentController extends Controller
+class CommentsController extends Controller
 {
 
 	public function __construct()

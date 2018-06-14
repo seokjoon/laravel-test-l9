@@ -1,6 +1,7 @@
 <?php
 
 return [
+	'api_domain' => env('API_DOMAIN'),
 	//'cache' => false,
 	'cache' => true,
 	'description' => 'desc',
@@ -29,6 +30,6 @@ return [
 			'tip' => 'Tip',
 		],
 	],
-	'url' => 'http://localhost',
+	'url' => env('APP_URL'),
 ];
 

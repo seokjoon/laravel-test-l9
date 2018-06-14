@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -102,8 +104,8 @@ Route::get('social/{provider}', ['as' => 'social.login', 'uses' => 'SocialContro
 
 Route::get('tags/{slug}/articles', [ 'as' => 'tags.articles.index', 'uses' => 'ArticlesController@index' ]);
 
-Route::resource('comments', 'CommentController', ['only' => ['update', 'destory']]);
-Route::resource('articles.comments', 'CommentController', ['only' => 'store']);
+Route::resource('comments', 'CommentsController', ['only' => ['update', 'destory']]);
+Route::resource('articles.comments', 'CommentsController', ['only' => 'store']);
 Route::post('comments/{comment}/votes', ['as' => 'comments.vote', 'uses' => 'CommentsController@vote']);
 
 Route::get('locale', [ 'as' => 'locale', 'uses' => 'WelcomeController@locale']);

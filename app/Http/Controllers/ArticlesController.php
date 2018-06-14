@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -96,7 +98,19 @@ class ArticlesController extends Controller implements Cacheable
 		$articles = $this->cache($cacheKey, 5, $query, 'paginate', 3);
 
 		//dd(view('articles.index', compact('articles'))->render());
+		//return view('articles.index', compact('articles'));
+		return $this->respondCollection($articles);
+	}
+
+	protected function respondCollection(LengthAwarePaginator $articles)
+	{
 		return view('articles.index', compact('articles'));
+	}
+
+	protected function respondCreate(Article $article)
+	{
+		flash()->success(trans('forum.articles.success_writing'));
+		return redirect(route('articles.show', $article->id));
 	}
 
     /**
@@ -159,7 +173,8 @@ class ArticlesController extends Controller implements Cacheable
 
 		event(new \App\Events\ModelChanged(['articles']));
 
-		return redirect(route('articles.index'))->with('flash_message', '작성하신 글이 저장되었습니다.');
+		//return redirect(route('articles.index'))->with('flash_message', '작성하신 글이 저장되었습니다.');
+		return $this->respondCreate($article);
 	}
 
     /**
