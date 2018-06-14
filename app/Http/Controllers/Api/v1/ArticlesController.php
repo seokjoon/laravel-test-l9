@@ -10,6 +10,13 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 class ArticlesController extends ParentController
 {
 
+	public function __construct()
+	{
+		parent::__construct();
+		$this->middleware = [];
+		$this->middleware('auth.basic.once', ['except' => ['index', 'show', 'tags']]);
+	}
+
 	protected function respondCreate(Article $article)
 	{
 		return response()->json(
