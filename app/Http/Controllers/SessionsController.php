@@ -24,6 +24,11 @@ class SessionsController extends Controller
 		return redirect('/');
 	}
 
+	protected function respondCreated($token)
+	{
+
+	}
+
 	protected function respondError($message)
 	{
 		flash()->error($message);

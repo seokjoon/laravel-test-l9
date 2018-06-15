@@ -155,6 +155,7 @@ return [
 		Intervention\Image\ImageServiceProvider::class,
 		Laracasts\Flash\FlashServiceProvider::class,
 		Laravel\Socialite\SocialiteServiceProvider::class,
+		Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -216,6 +217,8 @@ return [
 		'Image' => Intervention\Image\Facades\Image::class,
 		'Flash' => Laracasts\Flash\Flash::class,
 		'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+		'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+		'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
     ],
 
 ];

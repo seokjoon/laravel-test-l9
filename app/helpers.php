@@ -60,6 +60,18 @@ if(!(function_exists('gravatar_profile_url'))) {
 	}
 }
 
+if(!(function_exists('is_api_domain'))) {
+	function is_api_domain() {
+		return starts_with(request()->getHttpHost(), config('project.api_domain'));
+	}
+}
+
+if(!(function_exists('jwt'))) {
+	function jwt() {
+		return app('tymon.jwt.auth');
+	}
+}
+
 if(!(function_exists('markdown'))) {
 	function markdown($text = null) {
 		return app(ParsedownExtra::class)->text($text);
