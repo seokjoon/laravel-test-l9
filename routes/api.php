@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['domain' => config('project.api_domain'), 'namespace' => 'Api', 'as' => 'api.'], function() {
 
 	Route::post('auth/login', ['as' => 'sessions.store', 'uses' => 'SessionsController@store']);
+	Route::post('auth/refresh', ['middleware' => 'jwt.refresh', 'as' => 'sessions.refresh', function() {}]);
 
 	Route::group(['prefix' => 'v1', 'namespace' => 'v1', 'as' => 'v1.'], function() {
 		Route::get('/', ['as' => 'index', 'uses' => 'WelcomeController@index']);

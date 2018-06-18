@@ -67,7 +67,7 @@ class UsersController extends Controller
 	{
 		auth()->login($user);
 		flash($message);
-		return ($return = \request('return')) ? redirect(urlencode($return)) : redirect()->intended();
+		return ($return = \request('return')) ? redirect(urldecode($return)) : redirect()->intended();
 	}
 
 	protected function respondUpdated(\App\User $user)

@@ -58,6 +58,8 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+		'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+		'jwt.refresh' => \App\Http\Middleware\RefreshToken::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     ];
