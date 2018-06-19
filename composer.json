@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": "^7.1.3",
+        "appkr/api": "^3.0",
         "barryvdh/laravel-debugbar": "^3.1",
         "doctrine/dbal": "^2.7",
         "erusev/parsedown-extra": "^0.7.1",

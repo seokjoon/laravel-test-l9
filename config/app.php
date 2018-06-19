@@ -151,6 +151,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Appkr\Api\ApiServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
 		Intervention\Image\ImageServiceProvider::class,
 		Laracasts\Flash\FlashServiceProvider::class,
