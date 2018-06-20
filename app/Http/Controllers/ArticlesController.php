@@ -99,10 +99,12 @@ class ArticlesController extends Controller implements Cacheable
 
 		//dd(view('articles.index', compact('articles'))->render());
 		//return view('articles.index', compact('articles'));
-		return $this->respondCollection($articles);
+		//return $this->respondCollection($articles);
+		return $this->respondCollection($articles, $cacheKey);
 	}
 
-	protected function respondCollection(LengthAwarePaginator $articles)
+	//protected function respondCollection(LengthAwarePaginator $articles)
+	protected function respondCollection(LengthAwarePaginator $articles, $cacheKey = null)
 	{
 		return view('articles.index', compact('articles'));
 	}
@@ -186,13 +188,16 @@ class ArticlesController extends Controller implements Cacheable
     //public function show($id) //explicit route model binding in RouteServiceProvider.php
     public function show(Article $article)
     {
+
 		//$article = \App\Article::findOrFail($id); //route model binding
 		////dd($article);
 		////debug($article->toArray());
 		//return view('articles.show', compact('article'));
 
-		$article->view_count += 1;
-		$article->save();
+		if(!(is_api_domain())) {
+			$article->view_count += 1;
+			$article->save();
+		}
 
 		$comments = $article->comments()->with('replies')->withTrashed()->whereNull('parent_id')->latest()->get();
 

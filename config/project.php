@@ -5,6 +5,7 @@ return [
 	//'cache' => false,
 	'cache' => true,
 	'description' => 'desc',
+	'etag' => true,
 	'locales' => [
 		'en' => 'English',
 		'ko' => '한국어',

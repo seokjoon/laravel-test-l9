@@ -39,6 +39,26 @@ class ArticleTransformer extends TransformerAbstract
      */
     protected $hidden = [];
 
+	/**
+	 * Include comments.
+	 *
+	 * @param  \App\Article $article
+	 * @param  \League\Fractal\ParamBag|null $paramBag
+	 * @return  \League\Fractal\Resource\Collection
+	 */
+	public function includeComments(Article $article, ParamBag $paramBag = null)
+	{
+		$transformer = new \App\Transformers\CommentTransformer($paramBag);
+
+		$comments = $article->comments()
+			->limit($transformer->getLimit())
+			->offset($transformer->getOffset())
+			->orderBy($transformer->getSortKey(), $transformer->getSortDirection())
+			->get();
+
+		return $this->collection($comments, $transformer);
+	}
+
     /**
      * Transform single resource.
      *
@@ -78,26 +98,14 @@ class ArticleTransformer extends TransformerAbstract
 			],
         ];
 
+        /* if($fields = $this->getPartialFields()) {
+        	$payload = array_only($payload, $fields);
+		} */
+        $fields = request()->get('fields');
+        if(!(empty($fields))) {
+        	$fields = explode(',', $fields);
+			$payload = array_only($payload, $fields);
+		}
         return $this->buildPayload($payload);
     }
-
-                        /**
-     * Include comments.
-     *
-     * @param  \App\Article $article
-     * @param  \League\Fractal\ParamBag|null $paramBag
-     * @return  \League\Fractal\Resource\Collection
-     */
-    public function includeComments(Article $article, ParamBag $paramBag = null)
-    {
-        $transformer = new \App\Transformers\CommentTransformer($paramBag);
-
-        $comments = $article->comments()
-            ->limit($transformer->getLimit())
-            ->offset($transformer->getOffset())
-            ->orderBy($transformer->getSortKey(), $transformer->getSortDirection())
-            ->get();
-
-        return $this->collection($comments, $transformer);
-    }
-            }
+ }
