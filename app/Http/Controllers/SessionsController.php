@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Cache\RateLimiter;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SessionsController extends Controller
 {
+	use ThrottlesLogins;
+
+	protected $lockoutTime = 60;
+
+	protected $maxLoginAttempts = 5;
 
 	public function __construct()
 	{
@@ -48,6 +56,12 @@ class SessionsController extends Controller
 		return back()->withInput();
 	}
 
+	protected function sendLockoutResponse(Request $request)
+	{
+		$seconds = app(RateLimiter::class)->availableIn($this->throttleKey($request));
+		return json()->tooManyRequestsError('account_locked:for_{$seconds}_sec');
+	}
+
 	public function store(Request $request)
 	{
 		$this->validate($request, [
@@ -66,16 +80,30 @@ class SessionsController extends Controller
 		flash(auth()->user()->name . '님, 환경합니다.');
 		return redirect()->intended('home'); */
 
+		$throttles = method_exists($this, 'hasTooManyLoginAttempts');
+		if(($throttles) && ($lockedOut = $this->hasTooManyLoginAttempts($request))) {
+			$this->fireLockoutEvent($request);
+			return $this->sendLockoutResponse($request);
+		}
+
 		$token = is_api_domain()
 			? jwt()->attempt($request->only('email', 'password'))
 			: auth()->attempt($request->only('email', 'password'), $request->has('remember'));
 		if(!($token)) {
+			if(($throttles) && (!($lockedOut))) {
+				$this->incrementLoginAttempts($request);
+			}
 			$this->respondLoginFailed();
 		}
-		if(!(auth()->user()->activated)) {
+		if((!(auth()->user())) || (!(auth()->user()->activated))) {
 			auth()->logout();
 			return $this->respondNotConfirmed();
 		}
 		return $this->respondCreated($token);
+	}
+
+	public function username()
+	{
+		return 'email';
 	}
 }

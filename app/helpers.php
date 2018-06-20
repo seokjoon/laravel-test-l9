@@ -109,6 +109,16 @@ if(!(function_exists('link_for_sort'))) {
 	}
 }
 
+if(!(function_exists('optimus'))) {
+	function optimus($id = null) {
+		$factory = app('optimus');
+		if(func_num_args() === 0) {
+			return $factory;
+		}
+		return $factory->encode($id);
+	}
+}
+
 if(!(function_exists('taggable'))) {
 	function taggable() {
 		return in_array(config('cache.default'), ['memcached', 'redis'], true);

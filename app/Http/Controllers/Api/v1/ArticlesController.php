@@ -18,6 +18,7 @@ class ArticlesController extends ParentController
 		$this->middleware = [];
 		//$this->middleware('auth.basic.once', ['except' => ['index', 'show', 'tags']]);
 		$this->middleware('jwt.auth', ['except' => ['index', 'show', 'tags']]);
+		$this->middleware('throttle:60,1');
 	}
 
 	protected function respondCreate(Article $article)

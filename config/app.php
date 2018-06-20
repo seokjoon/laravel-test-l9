@@ -152,6 +152,7 @@ return [
          * Package Service Providers...
          */
         Appkr\Api\ApiServiceProvider::class,
+		Barryvdh\Cors\ServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
 		Intervention\Image\ImageServiceProvider::class,
 		Laracasts\Flash\FlashServiceProvider::class,
@@ -215,6 +216,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+		'Cors' => Barryvdh\Cors\HandleCors::class,
 		'Image' => Intervention\Image\Facades\Image::class,
 		'Flash' => Laracasts\Flash\Flash::class,
 		'Socialite' => Laravel\Socialite\Facades\Socialite::class,

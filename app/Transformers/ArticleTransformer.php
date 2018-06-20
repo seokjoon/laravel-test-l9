@@ -67,8 +67,10 @@ class ArticleTransformer extends TransformerAbstract
      */
     public function transform(Article $article)
     {
+    	$obfuscatedId = optimus($article->id);
+
         $payload = [
-            'id' => (int) $article->id,
+            'id' => $obfuscatedId, //(int) $article->id,
 			'title' => $article->title,
 			'content' => $article->content,
 			'content_html' => markdown($article->content),
@@ -85,15 +87,18 @@ class ArticleTransformer extends TransformerAbstract
 			'links' => [
 				[
 					'rel' => 'self',
-					'href' => route('api.v1.articles.show', $article->id),
+					//'href' => route('api.v1.articles.show', $article->id),
+					'href' => route('api.v1.articles.show', $obfuscatedId),
 				],
 				[
 					'rel' => 'api.v1.articles.attachments.index',
-					'href' => route('api.v1.articles.attachments.index', $article->id),
+					//'href' => route('api.v1.articles.attachments.index', $article->id),
+					'href' => route('api.v1.articles.attachments.index', $obfuscatedId),
 				],
 				[
 					'rel' => 'api.v1.articles.comments.index',
-					'href' => route('api.v1.articles.comments.index', $article->id),
+					//'href' => route('api.v1.articles.comments.index', $article->id),
+					'href' => route('api.v1.articles.comments.index', $obfuscatedId),
 				],
 			],
         ];

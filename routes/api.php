@@ -18,7 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['domain' => config('project.api_domain'), 'namespace' => 'Api', 'as' => 'api.'], function() {
+//Route::group(['domain' => config('project.api_domain'), 'namespace' => 'Api', 'as' => 'api.'], function() {
+Route::group(['domain' => config('project.api_domain'), 'namespace' => 'Api', 'as' => 'api.', 'middleware' => ['Cors']], function() {
 
 	Route::post('auth/login', ['as' => 'sessions.store', 'uses' => 'SessionsController@store']);
 	Route::post('auth/refresh', ['middleware' => 'jwt.refresh', 'as' => 'sessions.refresh', function() {}]);

@@ -50,5 +50,8 @@ class AppServiceProvider extends ServiceProvider
     	/* if($this->app->environment('local')) {
     		$this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
 		} */
+    	$this->app->singleton('optimus', function() {
+    		return new \Jenssegers\Optimus\Optimus(310461551, 325098127, 105645182);
+		});
     }
 }
