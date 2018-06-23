@@ -16,9 +16,12 @@
   ];
 
   $shared_item = [
-    "{$shared_dir}/.env" => "{$release_dir}/{$distname}/.env",
-    "{$shared_dir}/storage" => "{$release_dir}/{$distname}/storage",
-    "{$shared_dir}/cache" => "{$release_dir}/{$distname}/bootstrap/cache",
+    #### "{$shared_dir}/.env" => "{$release_dir}/{$distname}/.env",
+    "../../shared/.env" => ".env",
+    ####"{$shared_dir}/storage" => "{$release_dir}/{$distname}/storage",
+    "../../shared/storage" => "storage",
+    #### "{$shared_dir}/cache" => "{$release_dir}/{$distname}/bootstrap/cache",
+    "../../../shared/cache" => "bootstrap/cache",
     #### "{$shared_dir}/files" => "{$release_dir}/{$distname}/public/files",
   ];
 @endsetup
@@ -39,12 +42,14 @@
   @foreach($shared_item as $global => $local)
     [ -f {{ $local }} ] && rm {{ $local }};
     [ -d {{ $local }} ] && rm -rf {{ $local }};
-    ln -nfs {{ $global }} {{ $local }};
+    #### ln -nfs {{ $global }} {{ $local }};
+    cd {{ $release_dir }}/{{ $distname }} && ln -nfs {{$global}} ./{{$local}}
   @endforeach
 
   cd {{ $release_dir }}/{{ $distname }} && composer install --prefer-dist --no-scripts --no-dev;
 
-  ln -nfs {{ $release_dir }}/{{ $distname }} {{ $project_root }};
+  #### ln -nfs {{ $release_dir }}/{{ $distname }} {{ $project_root }};
+  cd {{ $base_dir }} && ln -nfs releases/{{ $distname }} {{ $project_root }}
 
   chmod -R 775 {{ $shared_dir }}/storage;
   chmod -R 775 {{ $shared_dir }}/cache;
