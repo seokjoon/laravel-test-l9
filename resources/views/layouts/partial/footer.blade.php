@@ -9,5 +9,6 @@
 			</li>
 		@endforeach
 	</ul>
+	TEST
 </footer>
 <br /><br />
