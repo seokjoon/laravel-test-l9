@@ -158,6 +158,7 @@ return [
 		Laracasts\Flash\FlashServiceProvider::class,
 		Laravel\Socialite\SocialiteServiceProvider::class,
 		Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+		Lubusin\Decomposer\DecomposerServiceProvider::class,
 
         /*
          * Application Service Providers...

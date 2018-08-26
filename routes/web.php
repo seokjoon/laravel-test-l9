@@ -109,3 +109,10 @@ Route::resource('articles.comments', 'CommentsController', ['only' => 'store']);
 Route::post('comments/{comment}/votes', ['as' => 'comments.vote', 'uses' => 'CommentsController@vote']);
 
 Route::get('locale', [ 'as' => 'locale', 'uses' => 'WelcomeController@locale']);
+
+Route::get('decompose','\Lubusin\Decomposer\Controllers\DecomposerController@index');
+
+////
+//dump(\Illuminate\Support\Facades\Session::);
+//dump(collect('foo'));
+//dump(config('project.api_domain'));
