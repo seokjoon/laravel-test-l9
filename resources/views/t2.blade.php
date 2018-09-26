@@ -10,7 +10,7 @@
 	</head>
 
 	<body>
-		<div id="example">
-		</div>
+		<div id="example"> </div>
+		<div id="T2" data-foo="{{$foo}}"></div>
 	</body>
 </html>
