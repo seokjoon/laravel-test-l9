@@ -21,7 +21,7 @@
 			{!! $errors->first('email', '<span class="form-error">:message</span>') !!}
 		</div>
 
-		<div class="form-grou {{ $errors->has('password') ? 'has-error' : '' }}">
+		<div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
 			<input type="password" name="password" class="form-control" placeholder="{{ trans('auth.form.password') }}" />
 			{!! $errors->first('password', '<span class="form-error">:message</span>') !!}
 		</div>
